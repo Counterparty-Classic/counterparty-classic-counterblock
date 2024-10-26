@@ -1,6 +1,6 @@
 FROM ubuntu:16.04
 
-MAINTAINER Counterparty Developers <dev@counterparty.io>
+MAINTAINER Counterparty Developers <j-dog@j-dog.net>
 
 # PyEnv
 ENV PYENV_ROOT /root/.pyenv
