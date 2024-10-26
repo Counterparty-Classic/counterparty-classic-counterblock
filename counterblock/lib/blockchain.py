@@ -109,9 +109,20 @@ def getaddressinfo(address):
     if is_multisig(address):
         array = address.split('_')
         # TODO: filter transactions
-        raw_transactions = reversed(search_raw_transactions(array[1:-1][1]))
+        #raw_transactions = reversed(search_raw_transactions(array[1:-1][1]))
+        raw_transactions = search_raw_transactions(array[1:-1][1])
     else:
-        raw_transactions = reversed(search_raw_transactions(address))
+        #raw_transactions = reversed(search_raw_transactions(address))
+        raw_transactions = search_raw_transactions(address)
+
+    # TODO: This code was disabling counterwallet and it really doesn't has reason to exist
+    # if someone is reading this and wondering why this comment is here, it's because i'm
+    # blindly commenting it out because it worked in production, but don't understand if
+    # there's a far reaching implication of it
+    #try:
+    #    raw_transactions = reversed(raw_transactions)
+    #except Exception as e:
+    #    raw_transactions = {}
 
     transactions = []
     for tx in raw_transactions:
