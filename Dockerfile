@@ -34,6 +34,8 @@ RUN apt-get update -q \
             libssl-dev \
             zlib1g-dev
 
+ENV REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+
 # Install pyenv and default python version
 RUN git clone https://github.com/pyenv/pyenv.git /root/.pyenv \
             && cd /root/.pyenv \
