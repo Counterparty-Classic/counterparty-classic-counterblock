@@ -27,18 +27,9 @@ def handle_reorg(msg, msg_data):
     if msg['command'] == 'reorg':
         logger.warn("Blockchain reorginization at block %s" % msg_data['block_index'])
 
-        rollback_block_index = msg_data['block_index'] - 1
-        message = util.call_jsonrpc_api("get_messages_by_index", {'message_indexes': [msg['_message_index']]}, abort_on_error=True)['result']
-        
-        if len(message):
-            message_decorated = messages.decorate_message_for_feed(message[0])
-            if message_decorated["_block_index"] < rollback_block_index:
-                config.state['last_message_index'] = message_decorated["_message_index"] + 1
-                rollback_block_index = message_decorated["_block_index"] - 1
-        
         # prune back to and including the specified message_index
-        database.rollback(rollback_block_index)
-        assert config.state['my_latest_block']['block_index'] == rollback_block_index
+        database.rollback(msg_data['block_index'] - 1)
+        assert config.state['my_latest_block']['block_index'] == msg_data['block_index'] - 1
         #^ this wil reset config.state['last_message_index'] to -1, which will be restored as we exit the message processing loop
 
         # abort the current block processing
